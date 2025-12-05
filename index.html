@@ -468,6 +468,11 @@ body {
     color: var(--error);
 }
 
+.info-tag.category {
+    background: var(--purple-light);
+    color: var(--purple);
+}
+
 /* Mastery indicator */
 .mastery-bar {
     height: 4px;
@@ -1517,6 +1522,21 @@ input:checked + .slider:before {
                     <option value="Hitpa'el">Hitpa'el</option>
                     <option value="Nif'al">Nif'al</option>
                 </select>
+                <select id="categoryFilter" class="filter-select" onchange="filterVerbs()">
+                    <option value="">All Categories</option>
+                    <option value="Basic">Basic</option>
+                    <option value="Communication">Communication</option>
+                    <option value="Mental">Mental</option>
+                    <option value="Emotions">Emotions</option>
+                    <option value="Senses">Senses</option>
+                    <option value="Movement">Movement</option>
+                    <option value="Daily Life">Daily Life</option>
+                    <option value="Social">Social</option>
+                    <option value="Work/Study">Work/Study</option>
+                    <option value="Actions">Actions</option>
+                    <option value="Creative">Creative</option>
+                    <option value="Life Events">Life Events</option>
+                </select>
             </div>
 
             <!-- Verb List -->
@@ -1673,6 +1693,7 @@ const VERBS = [
         infinitive: "להיות",
         transliteration: "lihyot",
         meaning: "to be",
+        category: "Basic",
         binyan: "Pa'al",
         root: "ה-י-ה",
         past: {
@@ -1709,6 +1730,7 @@ const VERBS = [
         infinitive: "לעשות",
         transliteration: "la'asot",
         meaning: "to do/make",
+        category: "Basic",
         binyan: "Pa'al",
         root: "ע-ש-ה",
         past: {
@@ -1745,6 +1767,7 @@ const VERBS = [
         infinitive: "לדעת",
         transliteration: "lada'at",
         meaning: "to know",
+        category: "Mental",
         binyan: "Pa'al",
         root: "י-ד-ע",
         past: {
@@ -1781,6 +1804,7 @@ const VERBS = [
         infinitive: "ללכת",
         transliteration: "lalechet",
         meaning: "to go/walk",
+        category: "Basic",
         binyan: "Pa'al",
         root: "ה-ל-ך",
         past: {
@@ -1817,6 +1841,7 @@ const VERBS = [
         infinitive: "לראות",
         transliteration: "lir'ot",
         meaning: "to see",
+        category: "Senses",
         binyan: "Pa'al",
         root: "ר-א-ה",
         past: {
@@ -1853,6 +1878,7 @@ const VERBS = [
         infinitive: "לאמר",
         transliteration: "lomar",
         meaning: "to say",
+        category: "Communication",
         binyan: "Pa'al",
         root: "א-מ-ר",
         past: {
@@ -1889,6 +1915,7 @@ const VERBS = [
         infinitive: "לתת",
         transliteration: "latet",
         meaning: "to give",
+        category: "Actions",
         binyan: "Pa'al",
         root: "נ-ת-ן",
         past: {
@@ -1925,6 +1952,7 @@ const VERBS = [
         infinitive: "לקחת",
         transliteration: "lakachat",
         meaning: "to take",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ל-ק-ח",
         past: {
@@ -1961,6 +1989,7 @@ const VERBS = [
         infinitive: "לבוא",
         transliteration: "lavo",
         meaning: "to come",
+        category: "Basic",
         binyan: "Pa'al",
         root: "ב-ו-א",
         past: {
@@ -1997,6 +2026,7 @@ const VERBS = [
         infinitive: "לחשוב",
         transliteration: "lachshov",
         meaning: "to think",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ח-ש-ב",
         past: {
@@ -2033,6 +2063,7 @@ const VERBS = [
         infinitive: "לאכול",
         transliteration: "le'echol",
         meaning: "to eat",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "א-כ-ל",
         past: {
@@ -2069,6 +2100,7 @@ const VERBS = [
         infinitive: "לשתות",
         transliteration: "lishtot",
         meaning: "to drink",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "ש-ת-ה",
         past: {
@@ -2105,6 +2137,7 @@ const VERBS = [
         infinitive: "ללמוד",
         transliteration: "lilmod",
         meaning: "to learn/study",
+        category: "Work/Study",
         binyan: "Pa'al",
         root: "ל-מ-ד",
         past: {
@@ -2141,6 +2174,7 @@ const VERBS = [
         infinitive: "לכתוב",
         transliteration: "lichtov",
         meaning: "to write",
+        category: "Communication",
         binyan: "Pa'al",
         root: "כ-ת-ב",
         past: {
@@ -2177,6 +2211,7 @@ const VERBS = [
         infinitive: "לקרוא",
         transliteration: "likro",
         meaning: "to read/call",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ק-ר-א",
         past: {
@@ -2213,6 +2248,7 @@ const VERBS = [
         infinitive: "לשמוע",
         transliteration: "lishmo'a",
         meaning: "to hear",
+        category: "Senses",
         binyan: "Pa'al",
         root: "ש-מ-ע",
         past: {
@@ -2249,6 +2285,7 @@ const VERBS = [
         infinitive: "להבין",
         transliteration: "lehavin",
         meaning: "to understand",
+        category: "Mental",
         binyan: "Hif'il",
         root: "ב-י-ן",
         past: {
@@ -2285,6 +2322,7 @@ const VERBS = [
         infinitive: "לאהוב",
         transliteration: "le'ehov",
         meaning: "to love",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "א-ה-ב",
         past: {
@@ -2321,6 +2359,7 @@ const VERBS = [
         infinitive: "לרצות",
         transliteration: "lirtzot",
         meaning: "to want",
+        category: "Basic",
         binyan: "Pa'al",
         root: "ר-צ-ה",
         past: {
@@ -2357,6 +2396,7 @@ const VERBS = [
         infinitive: "לדבר",
         transliteration: "ledaber",
         meaning: "to speak/talk",
+        category: "Communication",
         binyan: "Pi'el",
         root: "ד-ב-ר",
         past: {
@@ -2394,6 +2434,7 @@ const VERBS = [
         infinitive: "לשמוע",
         transliteration: "lishmoa",
         meaning: "to hear/listen",
+        category: "Senses",
         binyan: "Pa'al",
         root: "ש-מ-ע",
         past: {
@@ -2430,6 +2471,7 @@ const VERBS = [
         infinitive: "לכתוב",
         transliteration: "lichtov",
         meaning: "to write",
+        category: "Communication",
         binyan: "Pa'al",
         root: "כ-ת-ב",
         past: {
@@ -2466,6 +2508,7 @@ const VERBS = [
         infinitive: "לקרוא",
         transliteration: "likro",
         meaning: "to read/call",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ק-ר-א",
         past: {
@@ -2502,6 +2545,7 @@ const VERBS = [
         infinitive: "לאכול",
         transliteration: "le'echol",
         meaning: "to eat",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "א-כ-ל",
         past: {
@@ -2538,6 +2582,7 @@ const VERBS = [
         infinitive: "לשתות",
         transliteration: "lishtot",
         meaning: "to drink",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "ש-ת-ה",
         past: {
@@ -2574,6 +2619,7 @@ const VERBS = [
         infinitive: "לישון",
         transliteration: "lishon",
         meaning: "to sleep",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "י-ש-ן",
         past: {
@@ -2610,6 +2656,7 @@ const VERBS = [
         infinitive: "לעבוד",
         transliteration: "la'avod",
         meaning: "to work",
+        category: "Work/Study",
         binyan: "Pa'al",
         root: "ע-ב-ד",
         past: {
@@ -2646,6 +2693,7 @@ const VERBS = [
         infinitive: "ללמוד",
         transliteration: "lilmod",
         meaning: "to learn/study",
+        category: "Work/Study",
         binyan: "Pa'al",
         root: "ל-מ-ד",
         past: {
@@ -2682,6 +2730,7 @@ const VERBS = [
         infinitive: "לשבת",
         transliteration: "lashevet",
         meaning: "to sit",
+        category: "Movement",
         binyan: "Pa'al",
         root: "י-ש-ב",
         past: {
@@ -2718,6 +2767,7 @@ const VERBS = [
         infinitive: "לעמוד",
         transliteration: "la'amod",
         meaning: "to stand",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ע-מ-ד",
         past: {
@@ -2754,6 +2804,7 @@ const VERBS = [
         infinitive: "לרוץ",
         transliteration: "larutz",
         meaning: "to run",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ר-ו-ץ",
         past: {
@@ -2790,6 +2841,7 @@ const VERBS = [
         infinitive: "לשחות",
         transliteration: "lischot",
         meaning: "to swim",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ש-ח-ה",
         past: {
@@ -2826,6 +2878,7 @@ const VERBS = [
         infinitive: "לנסוע",
         transliteration: "linso'a",
         meaning: "to travel/drive",
+        category: "Movement",
         binyan: "Pa'al",
         root: "נ-ס-ע",
         past: {
@@ -2862,6 +2915,7 @@ const VERBS = [
         infinitive: "לטוס",
         transliteration: "latus",
         meaning: "to fly",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ט-ו-ס",
         past: {
@@ -2898,6 +2952,7 @@ const VERBS = [
         infinitive: "לחשוב",
         transliteration: "lachshov",
         meaning: "to think",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ח-ש-ב",
         past: {
@@ -2934,6 +2989,7 @@ const VERBS = [
         infinitive: "להבין",
         transliteration: "lehavin",
         meaning: "to understand",
+        category: "Mental",
         binyan: "Hif'il",
         root: "ב-י-ן",
         past: {
@@ -2970,6 +3026,7 @@ const VERBS = [
         infinitive: "לזכור",
         transliteration: "lizkor",
         meaning: "to remember",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ז-כ-ר",
         past: {
@@ -3006,6 +3063,7 @@ const VERBS = [
         infinitive: "לשכוח",
         transliteration: "lishko'ach",
         meaning: "to forget",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ש-כ-ח",
         past: {
@@ -3042,6 +3100,7 @@ const VERBS = [
         infinitive: "לקנות",
         transliteration: "liknot",
         meaning: "to buy",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ק-נ-ה",
         past: {
@@ -3078,6 +3137,7 @@ const VERBS = [
         infinitive: "למכור",
         transliteration: "limkor",
         meaning: "to sell",
+        category: "Actions",
         binyan: "Pa'al",
         root: "מ-כ-ר",
         past: {
@@ -3114,6 +3174,7 @@ const VERBS = [
         infinitive: "לשלם",
         transliteration: "leshalem",
         meaning: "to pay",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ש-ל-ם",
         past: {
@@ -3150,6 +3211,7 @@ const VERBS = [
         infinitive: "לפתוח",
         transliteration: "lifto'ach",
         meaning: "to open",
+        category: "Actions",
         binyan: "Pa'al",
         root: "פ-ת-ח",
         past: {
@@ -3186,6 +3248,7 @@ const VERBS = [
         infinitive: "לסגור",
         transliteration: "lisgor",
         meaning: "to close",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ס-ג-ר",
         past: {
@@ -3222,6 +3285,7 @@ const VERBS = [
         infinitive: "לאהוב",
         transliteration: "le'ehov",
         meaning: "to love",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "א-ה-ב",
         past: {
@@ -3258,6 +3322,7 @@ const VERBS = [
         infinitive: "לשנוא",
         transliteration: "lisno",
         meaning: "to hate",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "ש-נ-א",
         past: {
@@ -3294,6 +3359,7 @@ const VERBS = [
         infinitive: "לחכות",
         transliteration: "lechakot",
         meaning: "to wait",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ח-כ-ה",
         past: {
@@ -3330,6 +3396,7 @@ const VERBS = [
         infinitive: "לבקש",
         transliteration: "levakesh",
         meaning: "to ask/request",
+        category: "Communication",
         binyan: "Pi'el",
         root: "ב-ק-ש",
         past: {
@@ -3366,6 +3433,7 @@ const VERBS = [
         infinitive: "לחפש",
         transliteration: "lechapes",
         meaning: "to search/look for",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ח-פ-ש",
         past: {
@@ -3402,6 +3470,7 @@ const VERBS = [
         infinitive: "למצוא",
         transliteration: "limtzo",
         meaning: "to find",
+        category: "Actions",
         binyan: "Pa'al",
         root: "מ-צ-א",
         past: {
@@ -3438,6 +3507,7 @@ const VERBS = [
         infinitive: "לעזור",
         transliteration: "la'azor",
         meaning: "to help",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ע-ז-ר",
         past: {
@@ -3474,6 +3544,7 @@ const VERBS = [
         infinitive: "להתחיל",
         transliteration: "lehatchil",
         meaning: "to begin/start",
+        category: "Basic",
         binyan: "Hif'il",
         root: "ח-ל-ל",
         past: {
@@ -3510,6 +3581,7 @@ const VERBS = [
         infinitive: "לסיים",
         transliteration: "lesayem",
         meaning: "to finish/end",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ס-י-ם",
         past: {
@@ -3546,6 +3618,7 @@ const VERBS = [
         infinitive: "לחזור",
         transliteration: "lachzor",
         meaning: "to return/come back",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ח-ז-ר",
         past: {
@@ -3582,6 +3655,7 @@ const VERBS = [
         infinitive: "להגיע",
         transliteration: "lehagi'a",
         meaning: "to arrive",
+        category: "Movement",
         binyan: "Hif'il",
         root: "נ-ג-ע",
         past: {
@@ -3618,6 +3692,7 @@ const VERBS = [
         infinitive: "לעזוב",
         transliteration: "la'azov",
         meaning: "to leave/abandon",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ע-ז-ב",
         past: {
@@ -3654,6 +3729,7 @@ const VERBS = [
         infinitive: "להכיר",
         transliteration: "lehakir",
         meaning: "to know/recognize",
+        category: "Mental",
         binyan: "Hif'il",
         root: "נ-כ-ר",
         past: {
@@ -3690,6 +3766,7 @@ const VERBS = [
         infinitive: "להרגיש",
         transliteration: "lehargish",
         meaning: "to feel",
+        category: "Senses",
         binyan: "Hif'il",
         root: "ר-ג-ש",
         past: {
@@ -3726,6 +3803,7 @@ const VERBS = [
         infinitive: "לחיות",
         transliteration: "lichyot",
         meaning: "to live",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "ח-י-ה",
         past: {
@@ -3762,6 +3840,7 @@ const VERBS = [
         infinitive: "למות",
         transliteration: "lamut",
         meaning: "to die",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "מ-ו-ת",
         past: {
@@ -3798,6 +3877,7 @@ const VERBS = [
         infinitive: "לצחוק",
         transliteration: "litzchok",
         meaning: "to laugh",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "צ-ח-ק",
         past: {
@@ -3834,6 +3914,7 @@ const VERBS = [
         infinitive: "לבכות",
         transliteration: "livkot",
         meaning: "to cry",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "ב-כ-ה",
         past: {
@@ -3870,6 +3951,7 @@ const VERBS = [
         infinitive: "לשיר",
         transliteration: "lashir",
         meaning: "to sing",
+        category: "Creative",
         binyan: "Pa'al",
         root: "ש-י-ר",
         past: {
@@ -3906,6 +3988,7 @@ const VERBS = [
         infinitive: "לרקוד",
         transliteration: "lirkod",
         meaning: "to dance",
+        category: "Creative",
         binyan: "Pa'al",
         root: "ר-ק-ד",
         past: {
@@ -3942,6 +4025,7 @@ const VERBS = [
         infinitive: "לנגן",
         transliteration: "lenagen",
         meaning: "to play (music)",
+        category: "Creative",
         binyan: "Pi'el",
         root: "נ-ג-ן",
         past: {
@@ -3978,6 +4062,7 @@ const VERBS = [
         infinitive: "לצייר",
         transliteration: "letzayer",
         meaning: "to draw/paint",
+        category: "Creative",
         binyan: "Pi'el",
         root: "צ-י-ר",
         past: {
@@ -4014,6 +4099,7 @@ const VERBS = [
         infinitive: "לבשל",
         transliteration: "levashel",
         meaning: "to cook",
+        category: "Daily Life",
         binyan: "Pi'el",
         root: "ב-ש-ל",
         past: {
@@ -4050,6 +4136,7 @@ const VERBS = [
         infinitive: "לנקות",
         transliteration: "lenakot",
         meaning: "to clean",
+        category: "Daily Life",
         binyan: "Pi'el",
         root: "נ-ק-ה",
         past: {
@@ -4086,6 +4173,7 @@ const VERBS = [
         infinitive: "להתקלח",
         transliteration: "lehitkalech",
         meaning: "to shower",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ק-ל-ח",
         past: {
@@ -4122,6 +4210,7 @@ const VERBS = [
         infinitive: "להתלבש",
         transliteration: "lehitlabesh",
         meaning: "to get dressed",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ל-ב-ש",
         past: {
@@ -4158,6 +4247,7 @@ const VERBS = [
         infinitive: "להתעורר",
         transliteration: "lehit'orer",
         meaning: "to wake up",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ע-ו-ר",
         past: {
@@ -4194,6 +4284,7 @@ const VERBS = [
         infinitive: "להתאמן",
         transliteration: "lehit'amen",
         meaning: "to practice/train",
+        category: "Work/Study",
         binyan: "Hitpa'el",
         root: "א-מ-ן",
         past: {
@@ -4230,6 +4321,7 @@ const VERBS = [
         infinitive: "לשחק",
         transliteration: "lesachek",
         meaning: "to play",
+        category: "Creative",
         binyan: "Pi'el",
         root: "ש-ח-ק",
         past: {
@@ -4266,6 +4358,7 @@ const VERBS = [
         infinitive: "לטייל",
         transliteration: "letayel",
         meaning: "to travel/hike",
+        category: "Movement",
         binyan: "Pi'el",
         root: "ט-י-ל",
         past: {
@@ -4302,6 +4395,7 @@ const VERBS = [
         infinitive: "לצלם",
         transliteration: "letzalem",
         meaning: "to photograph",
+        category: "Actions",
         binyan: "Pi'el",
         root: "צ-ל-ם",
         past: {
@@ -4338,6 +4432,7 @@ const VERBS = [
         infinitive: "להזמין",
         transliteration: "lehazmin",
         meaning: "to order/invite",
+        category: "Social",
         binyan: "Hif'il",
         root: "ז-מ-ן",
         past: {
@@ -4374,6 +4469,7 @@ const VERBS = [
         infinitive: "להציע",
         transliteration: "lehatzi'a",
         meaning: "to suggest/offer",
+        category: "Social",
         binyan: "Hif'il",
         root: "י-צ-ע",
         past: {
@@ -4410,6 +4506,7 @@ const VERBS = [
         infinitive: "להסכים",
         transliteration: "lehaskim",
         meaning: "to agree",
+        category: "Social",
         binyan: "Hif'il",
         root: "ס-כ-ם",
         past: {
@@ -4446,6 +4543,7 @@ const VERBS = [
         infinitive: "לסרב",
         transliteration: "lesarev",
         meaning: "to refuse",
+        category: "Social",
         binyan: "Pi'el",
         root: "ס-ר-ב",
         past: {
@@ -4482,6 +4580,7 @@ const VERBS = [
         infinitive: "להחליט",
         transliteration: "lehachlit",
         meaning: "to decide",
+        category: "Mental",
         binyan: "Hif'il",
         root: "ח-ל-ט",
         past: {
@@ -4518,6 +4617,7 @@ const VERBS = [
         infinitive: "לבחור",
         transliteration: "livchor",
         meaning: "to choose",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ב-ח-ר",
         past: {
@@ -4554,6 +4654,7 @@ const VERBS = [
         infinitive: "לשאול",
         transliteration: "lish'ol",
         meaning: "to ask/borrow",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ש-א-ל",
         past: {
@@ -4590,6 +4691,7 @@ const VERBS = [
         infinitive: "לענות",
         transliteration: "la'anot",
         meaning: "to answer",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ע-נ-ה",
         past: {
@@ -4626,6 +4728,7 @@ const VERBS = [
         infinitive: "להסביר",
         transliteration: "lehasbir",
         meaning: "to explain",
+        category: "Communication",
         binyan: "Hif'il",
         root: "ס-ב-ר",
         past: {
@@ -4662,6 +4765,7 @@ const VERBS = [
         infinitive: "ללמד",
         transliteration: "lelamed",
         meaning: "to teach",
+        category: "Work/Study",
         binyan: "Pi'el",
         root: "ל-מ-ד",
         past: {
@@ -4698,6 +4802,7 @@ const VERBS = [
         infinitive: "להראות",
         transliteration: "lehar'ot",
         meaning: "to show",
+        category: "Actions",
         binyan: "Hif'il",
         root: "ר-א-ה",
         past: {
@@ -4734,6 +4839,7 @@ const VERBS = [
         infinitive: "לשלוח",
         transliteration: "lishlo'ach",
         meaning: "to send",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-ל-ח",
         past: {
@@ -4770,6 +4876,7 @@ const VERBS = [
         infinitive: "לקבל",
         transliteration: "lekabel",
         meaning: "to receive/accept",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ק-ב-ל",
         past: {
@@ -4806,6 +4913,7 @@ const VERBS = [
         infinitive: "לשמור",
         transliteration: "lishmor",
         meaning: "to keep/guard",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-מ-ר",
         past: {
@@ -4842,6 +4950,7 @@ const VERBS = [
         infinitive: "לנסות",
         transliteration: "lenasot",
         meaning: "to try",
+        category: "Actions",
         binyan: "Pi'el",
         root: "נ-ס-ה",
         past: {
@@ -4878,6 +4987,7 @@ const VERBS = [
         infinitive: "להצליח",
         transliteration: "lehatzli'ach",
         meaning: "to succeed",
+        category: "Actions",
         binyan: "Hif'il",
         root: "צ-ל-ח",
         past: {
@@ -4914,6 +5024,7 @@ const VERBS = [
         infinitive: "להפסיד",
         transliteration: "lehafsid",
         meaning: "to lose",
+        category: "Actions",
         binyan: "Hif'il",
         root: "פ-ס-ד",
         past: {
@@ -4950,6 +5061,7 @@ const VERBS = [
         infinitive: "לנצח",
         transliteration: "lenatze'ach",
         meaning: "to win",
+        category: "Actions",
         binyan: "Pi'el",
         root: "נ-צ-ח",
         past: {
@@ -4986,6 +5098,7 @@ const VERBS = [
         infinitive: "להתחתן",
         transliteration: "lehitchaten",
         meaning: "to get married",
+        category: "Social",
         binyan: "Hitpa'el",
         root: "ח-ת-ן",
         past: {
@@ -5022,6 +5135,7 @@ const VERBS = [
         infinitive: "להיפגש",
         transliteration: "lehipagesh",
         meaning: "to meet",
+        category: "Social",
         binyan: "Nif'al",
         root: "פ-ג-ש",
         past: {
@@ -5058,6 +5172,7 @@ const VERBS = [
         infinitive: "להיכנס",
         transliteration: "lehikanes",
         meaning: "to enter",
+        category: "Movement",
         binyan: "Nif'al",
         root: "כ-נ-ס",
         past: {
@@ -5094,6 +5209,7 @@ const VERBS = [
         infinitive: "לצאת",
         transliteration: "latzet",
         meaning: "to go out/exit",
+        category: "Basic",
         binyan: "Pa'al",
         root: "י-צ-א",
         past: {
@@ -5130,6 +5246,7 @@ const VERBS = [
         infinitive: "לגור",
         transliteration: "lagur",
         meaning: "to live (reside)",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "ג-ו-ר",
         past: {
@@ -5166,6 +5283,7 @@ const VERBS = [
         infinitive: "לעבור",
         transliteration: "la'avor",
         meaning: "to pass/cross",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ע-ב-ר",
         past: {
@@ -5202,6 +5320,7 @@ const VERBS = [
         infinitive: "להשתמש",
         transliteration: "lehishtamesh",
         meaning: "to use",
+        category: "Actions",
         binyan: "Hitpa'el",
         root: "ש-מ-ש",
         past: {
@@ -5238,6 +5357,7 @@ const VERBS = [
         infinitive: "להתקשר",
         transliteration: "lehitkasher",
         meaning: "to call (phone)",
+        category: "Communication",
         binyan: "Hitpa'el",
         root: "ק-ש-ר",
         past: {
@@ -5274,6 +5394,7 @@ const VERBS = [
         infinitive: "להתפלל",
         transliteration: "lehitpalel",
         meaning: "to pray",
+        category: "Life Events",
         binyan: "Hitpa'el",
         root: "פ-ל-ל",
         past: {
@@ -5310,6 +5431,7 @@ const VERBS = [
         infinitive: "לברך",
         transliteration: "levarech",
         meaning: "to bless",
+        category: "Life Events",
         binyan: "Pi'el",
         root: "ב-ר-ך",
         past: {
@@ -5346,6 +5468,7 @@ const VERBS = [
         infinitive: "לספר",
         transliteration: "lesaper",
         meaning: "to tell/count",
+        category: "Communication",
         binyan: "Pi'el",
         root: "ס-פ-ר",
         past: {
@@ -5382,6 +5505,7 @@ const VERBS = [
         infinitive: "להאמין",
         transliteration: "leha'amin",
         meaning: "to believe",
+        category: "Basic",
         binyan: "Hif'il",
         root: "א-מ-ן",
         past: {
@@ -5418,6 +5542,7 @@ const VERBS = [
         infinitive: "לקוות",
         transliteration: "lekavot",
         meaning: "to hope",
+        category: "Mental",
         binyan: "Pi'el",
         root: "ק-ו-ה",
         past: {
@@ -5454,6 +5579,7 @@ const VERBS = [
         infinitive: "לפחד",
         transliteration: "lefached",
         meaning: "to fear/be afraid",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "פ-ח-ד",
         past: {
@@ -5490,6 +5616,7 @@ const VERBS = [
         infinitive: "להתרגז",
         transliteration: "lehitragez",
         meaning: "to get angry",
+        category: "Emotions",
         binyan: "Hitpa'el",
         root: "ר-ג-ז",
         past: {
@@ -5526,6 +5653,7 @@ const VERBS = [
         infinitive: "לשנות",
         transliteration: "leshanot",
         meaning: "to change",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ש-נ-ה",
         past: {
@@ -5562,6 +5690,7 @@ const VERBS = [
         infinitive: "לתקן",
         transliteration: "letaken",
         meaning: "to fix/repair",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ת-ק-ן",
         past: {
@@ -5598,6 +5727,7 @@ const VERBS = [
         infinitive: "לבנות",
         transliteration: "livnot",
         meaning: "to build",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ב-נ-ה",
         past: {
@@ -5634,6 +5764,7 @@ const VERBS = [
         infinitive: "לשבור",
         transliteration: "lishbor",
         meaning: "to break",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-ב-ר",
         past: {
@@ -5670,6 +5801,7 @@ const VERBS = [
         infinitive: "לזרוק",
         transliteration: "lizrok",
         meaning: "to throw",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ז-ר-ק",
         past: {
@@ -5706,6 +5838,7 @@ const VERBS = [
         infinitive: "לתפוס",
         transliteration: "litfos",
         meaning: "to catch/grab",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ת-פ-ס",
         past: {
@@ -5742,6 +5875,7 @@ const VERBS = [
         infinitive: "לשים",
         transliteration: "lasim",
         meaning: "to put/place",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-י-ם",
         past: {
@@ -5778,6 +5912,7 @@ const VERBS = [
         infinitive: "להרים",
         transliteration: "leharim",
         meaning: "to lift/raise",
+        category: "Actions",
         binyan: "Hif'il",
         root: "ר-ו-ם",
         past: {
@@ -5814,6 +5949,7 @@ const VERBS = [
         infinitive: "להוריד",
         transliteration: "lehorid",
         meaning: "to lower/download",
+        category: "Actions",
         binyan: "Hif'il",
         root: "י-ר-ד",
         past: {
@@ -5850,6 +5986,7 @@ const VERBS = [
         infinitive: "להדליק",
         transliteration: "lehadlik",
         meaning: "to turn on/light",
+        category: "Actions",
         binyan: "Hif'il",
         root: "ד-ל-ק",
         past: {
@@ -5886,6 +6023,7 @@ const VERBS = [
         infinitive: "לכבות",
         transliteration: "lechabot",
         meaning: "to turn off/extinguish",
+        category: "Actions",
         binyan: "Pi'el",
         root: "כ-ב-ה",
         past: {
@@ -5923,6 +6061,7 @@ const VERBS = [
         infinitive: "להחזיק",
         transliteration: "lehachzik",
         meaning: "to hold",
+        category: "Actions",
         binyan: "Hif'il",
         root: "ח-ז-ק",
         past: {
@@ -5959,6 +6098,7 @@ const VERBS = [
         infinitive: "לשים",
         transliteration: "lasim",
         meaning: "to put/place",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-י-מ",
         past: {
@@ -5995,6 +6135,7 @@ const VERBS = [
         infinitive: "לקחת",
         transliteration: "lakachat",
         meaning: "to take",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ל-ק-ח",
         past: {
@@ -6031,6 +6172,7 @@ const VERBS = [
         infinitive: "להביא",
         transliteration: "lehavi",
         meaning: "to bring",
+        category: "Actions",
         binyan: "Hif'il",
         root: "ב-ו-א",
         past: {
@@ -6067,6 +6209,7 @@ const VERBS = [
         infinitive: "לשלוח",
         transliteration: "lishlo'ach",
         meaning: "to send",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-ל-ח",
         past: {
@@ -6103,6 +6246,7 @@ const VERBS = [
         infinitive: "לקבל",
         transliteration: "lekabel",
         meaning: "to receive/accept",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ק-ב-ל",
         past: {
@@ -6139,6 +6283,7 @@ const VERBS = [
         infinitive: "לפתוח",
         transliteration: "lifto'ach",
         meaning: "to open",
+        category: "Actions",
         binyan: "Pa'al",
         root: "פ-ת-ח",
         past: {
@@ -6175,6 +6320,7 @@ const VERBS = [
         infinitive: "לסגור",
         transliteration: "lisgor",
         meaning: "to close",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ס-ג-ר",
         past: {
@@ -6211,6 +6357,7 @@ const VERBS = [
         infinitive: "להתחיל",
         transliteration: "lehatchil",
         meaning: "to begin/start",
+        category: "Basic",
         binyan: "Hif'il",
         root: "ח-ל-ל",
         past: {
@@ -6247,6 +6394,7 @@ const VERBS = [
         infinitive: "לסיים",
         transliteration: "lesayem",
         meaning: "to finish/complete",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ס-י-מ",
         past: {
@@ -6283,6 +6431,7 @@ const VERBS = [
         infinitive: "להמשיך",
         transliteration: "lehamshich",
         meaning: "to continue",
+        category: "Actions",
         binyan: "Hif'il",
         root: "מ-ש-כ",
         past: {
@@ -6319,6 +6468,7 @@ const VERBS = [
         infinitive: "להפסיק",
         transliteration: "lehafsik",
         meaning: "to stop",
+        category: "Actions",
         binyan: "Hif'il",
         root: "פ-ס-ק",
         past: {
@@ -6355,6 +6505,7 @@ const VERBS = [
         infinitive: "לחזור",
         transliteration: "lachzor",
         meaning: "to return/come back",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ח-ז-ר",
         past: {
@@ -6391,6 +6542,7 @@ const VERBS = [
         infinitive: "להחזיר",
         transliteration: "lehachzir",
         meaning: "to return (something)",
+        category: "Movement",
         binyan: "Hif'il",
         root: "ח-ז-ר",
         past: {
@@ -6427,6 +6579,7 @@ const VERBS = [
         infinitive: "לצאת",
         transliteration: "latset",
         meaning: "to go out/exit",
+        category: "Basic",
         binyan: "Pa'al",
         root: "י-צ-א",
         past: {
@@ -6463,6 +6616,7 @@ const VERBS = [
         infinitive: "להיכנס",
         transliteration: "lehikanes",
         meaning: "to enter",
+        category: "Movement",
         binyan: "Nif'al",
         root: "כ-נ-ס",
         past: {
@@ -6499,6 +6653,7 @@ const VERBS = [
         infinitive: "לעלות",
         transliteration: "la'alot",
         meaning: "to go up/ascend",
+        category: "Basic",
         binyan: "Pa'al",
         root: "ע-ל-ה",
         past: {
@@ -6535,6 +6690,7 @@ const VERBS = [
         infinitive: "לרדת",
         transliteration: "laredet",
         meaning: "to go down/descend",
+        category: "Basic",
         binyan: "Pa'al",
         root: "י-ר-ד",
         past: {
@@ -6571,6 +6727,7 @@ const VERBS = [
         infinitive: "לחפש",
         transliteration: "lechapes",
         meaning: "to search/look for",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ח-פ-ש",
         past: {
@@ -6607,6 +6764,7 @@ const VERBS = [
         infinitive: "למצוא",
         transliteration: "limtso",
         meaning: "to find",
+        category: "Actions",
         binyan: "Pa'al",
         root: "מ-צ-א",
         past: {
@@ -6643,6 +6801,7 @@ const VERBS = [
         infinitive: "לבחור",
         transliteration: "livchor",
         meaning: "to choose",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ב-ח-ר",
         past: {
@@ -6679,6 +6838,7 @@ const VERBS = [
         infinitive: "להחליט",
         transliteration: "lehachlit",
         meaning: "to decide",
+        category: "Mental",
         binyan: "Hif'il",
         root: "ח-ל-ט",
         past: {
@@ -6715,6 +6875,7 @@ const VERBS = [
         infinitive: "לנסות",
         transliteration: "lenasot",
         meaning: "to try",
+        category: "Actions",
         binyan: "Pi'el",
         root: "נ-ס-ה",
         past: {
@@ -6751,6 +6912,7 @@ const VERBS = [
         infinitive: "להצליח",
         transliteration: "lehatsliach",
         meaning: "to succeed",
+        category: "Actions",
         binyan: "Hif'il",
         root: "צ-ל-ח",
         past: {
@@ -6787,6 +6949,7 @@ const VERBS = [
         infinitive: "להיכשל",
         transliteration: "lehikashel",
         meaning: "to fail",
+        category: "Actions",
         binyan: "Nif'al",
         root: "כ-ש-ל",
         past: {
@@ -6823,6 +6986,7 @@ const VERBS = [
         infinitive: "לעזור",
         transliteration: "la'azor",
         meaning: "to help",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ע-ז-ר",
         past: {
@@ -6859,6 +7023,7 @@ const VERBS = [
         infinitive: "לצרוך",
         transliteration: "litsrokh",
         meaning: "to need",
+        category: "Basic",
         binyan: "Pa'al",
         root: "צ-ר-כ",
         past: {
@@ -6895,6 +7060,7 @@ const VERBS = [
         infinitive: "לחשוב",
         transliteration: "lachshov",
         meaning: "to think",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ח-ש-ב",
         past: {
@@ -6931,6 +7097,7 @@ const VERBS = [
         infinitive: "להאמין",
         transliteration: "leha'amin",
         meaning: "to believe",
+        category: "Basic",
         binyan: "Hif'il",
         root: "א-מ-נ",
         past: {
@@ -6967,6 +7134,7 @@ const VERBS = [
         infinitive: "לחכות",
         transliteration: "lechakot",
         meaning: "to wait",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ח-כ-ה",
         past: {
@@ -7003,6 +7171,7 @@ const VERBS = [
         infinitive: "להגיע",
         transliteration: "lehagi'a",
         meaning: "to arrive",
+        category: "Movement",
         binyan: "Hif'il",
         root: "נ-ג-ע",
         past: {
@@ -7039,6 +7208,7 @@ const VERBS = [
         infinitive: "לעזוב",
         transliteration: "la'azov",
         meaning: "to leave/abandon",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ע-ז-ב",
         past: {
@@ -7075,6 +7245,7 @@ const VERBS = [
         infinitive: "להישאר",
         transliteration: "lehisha'er",
         meaning: "to stay/remain",
+        category: "Movement",
         binyan: "Nif'al",
         root: "ש-א-ר",
         past: {
@@ -7111,6 +7282,7 @@ const VERBS = [
         infinitive: "לקרוא",
         transliteration: "likro",
         meaning: "to call/read",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ק-ר-א",
         past: {
@@ -7147,6 +7319,7 @@ const VERBS = [
         infinitive: "להכיר",
         transliteration: "lehakir",
         meaning: "to know (someone)/recognize",
+        category: "Mental",
         binyan: "Hif'il",
         root: "נ-כ-ר",
         past: {
@@ -7183,6 +7356,7 @@ const VERBS = [
         infinitive: "להרגיש",
         transliteration: "lehargish",
         meaning: "to feel",
+        category: "Senses",
         binyan: "Hif'il",
         root: "ר-ג-ש",
         past: {
@@ -7219,6 +7393,7 @@ const VERBS = [
         infinitive: "לשנות",
         transliteration: "leshanot",
         meaning: "to change",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ש-נ-ה",
         past: {
@@ -7255,6 +7430,7 @@ const VERBS = [
         infinitive: "להשתמש",
         transliteration: "lehishtamesh",
         meaning: "to use",
+        category: "Actions",
         binyan: "Hitpa'el",
         root: "ש-מ-ש",
         past: {
@@ -7291,6 +7467,7 @@ const VERBS = [
         infinitive: "להתקשר",
         transliteration: "lehitkasher",
         meaning: "to call (phone)",
+        category: "Communication",
         binyan: "Hitpa'el",
         root: "ק-ש-ר",
         past: {
@@ -7327,6 +7504,7 @@ const VERBS = [
         infinitive: "להתחתן",
         transliteration: "lehitchaten",
         meaning: "to get married",
+        category: "Social",
         binyan: "Hitpa'el",
         root: "ח-ת-נ",
         past: {
@@ -7363,6 +7541,7 @@ const VERBS = [
         infinitive: "לגדול",
         transliteration: "ligdol",
         meaning: "to grow",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "ג-ד-ל",
         past: {
@@ -7399,6 +7578,7 @@ const VERBS = [
         infinitive: "לגור",
         transliteration: "lagur",
         meaning: "to live (reside)",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "ג-ו-ר",
         past: {
@@ -7435,6 +7615,7 @@ const VERBS = [
         infinitive: "לשחק",
         transliteration: "lesachek",
         meaning: "to play",
+        category: "Creative",
         binyan: "Pi'el",
         root: "ש-ח-ק",
         past: {
@@ -7471,6 +7652,7 @@ const VERBS = [
         infinitive: "להזמין",
         transliteration: "lehazmin",
         meaning: "to invite/order",
+        category: "Social",
         binyan: "Hif'il",
         root: "ז-מ-נ",
         past: {
@@ -7507,6 +7689,7 @@ const VERBS = [
         infinitive: "לבקר",
         transliteration: "levaker",
         meaning: "to visit",
+        category: "Social",
         binyan: "Pi'el",
         root: "ב-ק-ר",
         past: {
@@ -7543,6 +7726,7 @@ const VERBS = [
         infinitive: "להתלבש",
         transliteration: "lehitlabesh",
         meaning: "to get dressed",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ל-ב-ש",
         past: {
@@ -7579,6 +7763,7 @@ const VERBS = [
         infinitive: "להתרחץ",
         transliteration: "lehitrache'ts",
         meaning: "to wash oneself/bathe",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ר-ח-ץ",
         past: {
@@ -7615,6 +7800,7 @@ const VERBS = [
         infinitive: "לנהוג",
         transliteration: "linhog",
         meaning: "to drive",
+        category: "Movement",
         binyan: "Pa'al",
         root: "נ-ה-ג",
         past: {
@@ -7651,6 +7837,7 @@ const VERBS = [
         infinitive: "לטייל",
         transliteration: "letayel",
         meaning: "to travel/hike",
+        category: "Movement",
         binyan: "Pi'el",
         root: "ט-י-ל",
         past: {
@@ -7687,6 +7874,7 @@ const VERBS = [
         infinitive: "לשאוף",
         transliteration: "lish'of",
         meaning: "to aspire/breathe in",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "ש-א-פ",
         past: {
@@ -7723,6 +7911,7 @@ const VERBS = [
         infinitive: "להתפלל",
         transliteration: "lehitpalel",
         meaning: "to pray",
+        category: "Life Events",
         binyan: "Hitpa'el",
         root: "פ-ל-ל",
         past: {
@@ -7759,6 +7948,7 @@ const VERBS = [
         infinitive: "לברך",
         transliteration: "levarekh",
         meaning: "to bless",
+        category: "Life Events",
         binyan: "Pi'el",
         root: "ב-ר-כ",
         past: {
@@ -7795,6 +7985,7 @@ const VERBS = [
         infinitive: "להודות",
         transliteration: "lehodot",
         meaning: "to thank",
+        category: "Social",
         binyan: "Hif'il",
         root: "י-ד-ה",
         past: {
@@ -7831,6 +8022,7 @@ const VERBS = [
         infinitive: "לסלוח",
         transliteration: "lislo'ach",
         meaning: "to forgive",
+        category: "Social",
         binyan: "Pa'al",
         root: "ס-ל-ח",
         past: {
@@ -7867,6 +8059,7 @@ const VERBS = [
         infinitive: "להבטיח",
         transliteration: "lehavtiach",
         meaning: "to promise",
+        category: "Social",
         binyan: "Hif'il",
         root: "ב-ט-ח",
         past: {
@@ -7903,6 +8096,7 @@ const VERBS = [
         infinitive: "לשמור",
         transliteration: "lishmor",
         meaning: "to keep/guard",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-מ-ר",
         past: {
@@ -7939,6 +8133,7 @@ const VERBS = [
         infinitive: "לברוח",
         transliteration: "livro'ach",
         meaning: "to escape/run away",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ב-ר-ח",
         past: {
@@ -7975,6 +8170,7 @@ const VERBS = [
         infinitive: "להילחם",
         transliteration: "lehilachem",
         meaning: "to fight",
+        category: "Actions",
         binyan: "Nif'al",
         root: "ל-ח-מ",
         past: {
@@ -8011,6 +8207,7 @@ const VERBS = [
         infinitive: "לנצח",
         transliteration: "lenatse'ach",
         meaning: "to win/defeat",
+        category: "Actions",
         binyan: "Pi'el",
         root: "נ-צ-ח",
         past: {
@@ -8047,6 +8244,7 @@ const VERBS = [
         infinitive: "להפסיד",
         transliteration: "lehafsid",
         meaning: "to lose",
+        category: "Actions",
         binyan: "Hif'il",
         root: "פ-ס-ד",
         past: {
@@ -8083,6 +8281,7 @@ const VERBS = [
         infinitive: "לבדוק",
         transliteration: "livdok",
         meaning: "to check",
+        category: "Work/Study",
         binyan: "Pa'al",
         root: "ב-ד-ק",
         past: {
@@ -8119,6 +8318,7 @@ const VERBS = [
         infinitive: "להכין",
         transliteration: "lehakhin",
         meaning: "to prepare",
+        category: "Work/Study",
         binyan: "Hif'il",
         root: "כ-ו-נ",
         past: {
@@ -8155,6 +8355,7 @@ const VERBS = [
         infinitive: "לתקן",
         transliteration: "letaken",
         meaning: "to fix/repair",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ת-ק-נ",
         past: {
@@ -8191,6 +8392,7 @@ const VERBS = [
         infinitive: "לשבור",
         transliteration: "lishbor",
         meaning: "to break",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-ב-ר",
         past: {
@@ -8227,6 +8429,7 @@ const VERBS = [
         infinitive: "לבנות",
         transliteration: "livnot",
         meaning: "to build",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ב-נ-ה",
         past: {
@@ -8263,6 +8466,7 @@ const VERBS = [
         infinitive: "להרוס",
         transliteration: "leharos",
         meaning: "to destroy",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ה-ר-ס",
         past: {
@@ -8299,6 +8503,7 @@ const VERBS = [
         infinitive: "לייצר",
         transliteration: "leyatser",
         meaning: "to create/manufacture",
+        category: "Actions",
         binyan: "Pi'el",
         root: "י-צ-ר",
         past: {
@@ -8335,6 +8540,7 @@ const VERBS = [
         infinitive: "להשיג",
         transliteration: "lehasig",
         meaning: "to achieve/obtain",
+        category: "Actions",
         binyan: "Hif'il",
         root: "נ-ש-ג",
         past: {
@@ -8371,6 +8577,7 @@ const VERBS = [
         infinitive: "לפחד",
         transliteration: "lifchod",
         meaning: "to be afraid",
+        category: "Basic",
         binyan: "Pa'al",
         root: "פ-ח-ד",
         past: {
@@ -8407,6 +8614,7 @@ const VERBS = [
         infinitive: "לכעוס",
         transliteration: "lich'os",
         meaning: "to be angry",
+        category: "Basic",
         binyan: "Pa'al",
         root: "כ-ע-ס",
         past: {
@@ -8443,6 +8651,7 @@ const VERBS = [
         infinitive: "להתגעגע",
         transliteration: "lehitga'age'a",
         meaning: "to miss (someone)",
+        category: "Emotions",
         binyan: "Hitpa'el",
         root: "ג-ע-ע",
         past: {
@@ -8479,6 +8688,7 @@ const VERBS = [
         infinitive: "לחלום",
         transliteration: "lachlom",
         meaning: "to dream",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ח-ל-מ",
         past: {
@@ -8515,6 +8725,7 @@ const VERBS = [
         infinitive: "להתעורר",
         transliteration: "lehit'orer",
         meaning: "to wake up",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ע-ו-ר",
         past: {
@@ -8551,6 +8762,7 @@ const VERBS = [
         infinitive: "לנוח",
         transliteration: "lanu'ach",
         meaning: "to rest",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "נ-ו-ח",
         past: {
@@ -8587,6 +8799,7 @@ const VERBS = [
         infinitive: "לעבוד",
         transliteration: "la'avod",
         meaning: "to work",
+        category: "Work/Study",
         binyan: "Pa'al",
         root: "ע-ב-ד",
         past: {
@@ -8623,6 +8836,7 @@ const VERBS = [
         infinitive: "לנשום",
         transliteration: "linshom",
         meaning: "to breathe",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "נ-ש-מ",
         past: {
@@ -8659,6 +8873,7 @@ const VERBS = [
         infinitive: "לחיות",
         transliteration: "lichyot",
         meaning: "to live",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "ח-י-ה",
         past: {
@@ -8695,6 +8910,7 @@ const VERBS = [
         infinitive: "למות",
         transliteration: "lamut",
         meaning: "to die",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "מ-ו-ת",
         past: {
@@ -8731,6 +8947,7 @@ const VERBS = [
         infinitive: "להיוולד",
         transliteration: "lehivaled",
         meaning: "to be born",
+        category: "Basic",
         binyan: "Nif'al",
         root: "י-ל-ד",
         past: {
@@ -8767,6 +8984,7 @@ const VERBS = [
         infinitive: "להתאהב",
         transliteration: "lehit'ahev",
         meaning: "to fall in love",
+        category: "Emotions",
         binyan: "Hitpa'el",
         root: "א-ה-ב",
         past: {
@@ -8803,6 +9021,7 @@ const VERBS = [
         infinitive: "להתנשק",
         transliteration: "lehitnashek",
         meaning: "to kiss (each other)",
+        category: "Social",
         binyan: "Hitpa'el",
         root: "נ-ש-ק",
         past: {
@@ -8839,6 +9058,7 @@ const VERBS = [
         infinitive: "לחבק",
         transliteration: "lechabek",
         meaning: "to hug",
+        category: "Social",
         binyan: "Pi'el",
         root: "ח-ב-ק",
         past: {
@@ -8876,6 +9096,7 @@ const VERBS = [
         infinitive: "לצייר",
         transliteration: "letsayer",
         meaning: "to draw/paint",
+        category: "Creative",
         binyan: "Pi'el",
         root: "צ-י-ר",
         past: {
@@ -8912,6 +9133,7 @@ const VERBS = [
         infinitive: "לשחות",
         transliteration: "lischot",
         meaning: "to swim",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ש-ח-ה",
         past: {
@@ -8948,6 +9170,7 @@ const VERBS = [
         infinitive: "לרקוד",
         transliteration: "lirkod",
         meaning: "to dance",
+        category: "Creative",
         binyan: "Pa'al",
         root: "ר-ק-ד",
         past: {
@@ -8984,6 +9207,7 @@ const VERBS = [
         infinitive: "לטפל",
         transliteration: "letapel",
         meaning: "to treat/take care of",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ט-פ-ל",
         past: {
@@ -9020,6 +9244,7 @@ const VERBS = [
         infinitive: "לתקן",
         transliteration: "letaken",
         meaning: "to fix/repair",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ת-ק-נ",
         past: {
@@ -9056,6 +9281,7 @@ const VERBS = [
         infinitive: "לנקות",
         transliteration: "lenakot",
         meaning: "to clean",
+        category: "Daily Life",
         binyan: "Pi'el",
         root: "נ-ק-י",
         past: {
@@ -9092,6 +9318,7 @@ const VERBS = [
         infinitive: "לבשל",
         transliteration: "levashel",
         meaning: "to cook",
+        category: "Daily Life",
         binyan: "Pi'el",
         root: "ב-ש-ל",
         past: {
@@ -9128,6 +9355,7 @@ const VERBS = [
         infinitive: "לאפות",
         transliteration: "le'efot",
         meaning: "to bake",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "א-פ-ה",
         past: {
@@ -9164,6 +9392,7 @@ const VERBS = [
         infinitive: "לכבס",
         transliteration: "lechabes",
         meaning: "to wash (laundry)",
+        category: "Daily Life",
         binyan: "Pi'el",
         root: "כ-ב-ס",
         past: {
@@ -9200,6 +9429,7 @@ const VERBS = [
         infinitive: "לגהץ",
         transliteration: "legahetz",
         meaning: "to iron",
+        category: "Daily Life",
         binyan: "Pi'el",
         root: "ג-ה-צ",
         past: {
@@ -9236,6 +9466,7 @@ const VERBS = [
         infinitive: "להזמין",
         transliteration: "lehazmin",
         meaning: "to order/invite",
+        category: "Social",
         binyan: "Hif'il",
         root: "ז-מ-נ",
         past: {
@@ -9272,6 +9503,7 @@ const VERBS = [
         infinitive: "להציע",
         transliteration: "lehatsi'a",
         meaning: "to offer/suggest",
+        category: "Social",
         binyan: "Hif'il",
         root: "י-צ-ע",
         past: {
@@ -9308,6 +9540,7 @@ const VERBS = [
         infinitive: "לפגוש",
         transliteration: "lifgosh",
         meaning: "to meet",
+        category: "Social",
         binyan: "Pa'al",
         root: "פ-ג-ש",
         past: {
@@ -9344,6 +9577,7 @@ const VERBS = [
         infinitive: "להיפגש",
         transliteration: "lehipagesh",
         meaning: "to meet (with someone)",
+        category: "Social",
         binyan: "Nif'al",
         root: "פ-ג-ש",
         past: {
@@ -9380,6 +9614,7 @@ const VERBS = [
         infinitive: "לפרסם",
         transliteration: "lefarsem",
         meaning: "to publish/advertise",
+        category: "Work/Study",
         binyan: "Pi'el",
         root: "פ-ר-ס-מ",
         past: {
@@ -9416,6 +9651,7 @@ const VERBS = [
         infinitive: "להעתיק",
         transliteration: "leha'atik",
         meaning: "to copy",
+        category: "Work/Study",
         binyan: "Hif'il",
         root: "ע-ת-ק",
         past: {
@@ -9452,6 +9688,7 @@ const VERBS = [
         infinitive: "למחוק",
         transliteration: "limchok",
         meaning: "to erase/delete",
+        category: "Work/Study",
         binyan: "Pa'al",
         root: "מ-ח-ק",
         past: {
@@ -9488,6 +9725,7 @@ const VERBS = [
         infinitive: "להדפיס",
         transliteration: "lehadpis",
         meaning: "to print",
+        category: "Work/Study",
         binyan: "Hif'il",
         root: "ד-פ-ס",
         past: {
@@ -9524,6 +9762,7 @@ const VERBS = [
         infinitive: "לשמור",
         transliteration: "lishmor",
         meaning: "to keep/guard",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ש-מ-ר",
         past: {
@@ -9560,6 +9799,7 @@ const VERBS = [
         infinitive: "לזכור",
         transliteration: "lizkor",
         meaning: "to remember",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ז-כ-ר",
         past: {
@@ -9596,6 +9836,7 @@ const VERBS = [
         infinitive: "לשכוח",
         transliteration: "lishko'ach",
         meaning: "to forget",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ש-כ-ח",
         past: {
@@ -9632,6 +9873,7 @@ const VERBS = [
         infinitive: "להזכיר",
         transliteration: "lehazkir",
         meaning: "to remind",
+        category: "Mental",
         binyan: "Hif'il",
         root: "ז-כ-ר",
         past: {
@@ -9668,6 +9910,7 @@ const VERBS = [
         infinitive: "להסביר",
         transliteration: "lehasbir",
         meaning: "to explain",
+        category: "Communication",
         binyan: "Hif'il",
         root: "ס-ב-ר",
         past: {
@@ -9704,6 +9947,7 @@ const VERBS = [
         infinitive: "להבין",
         transliteration: "lehavin",
         meaning: "to understand",
+        category: "Mental",
         binyan: "Hif'il",
         root: "ב-י-נ",
         past: {
@@ -9740,6 +9984,7 @@ const VERBS = [
         infinitive: "לשאול",
         transliteration: "lish'ol",
         meaning: "to ask",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ש-א-ל",
         past: {
@@ -9776,6 +10021,7 @@ const VERBS = [
         infinitive: "לענות",
         transliteration: "la'anot",
         meaning: "to answer",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ע-נ-ה",
         past: {
@@ -9812,6 +10058,7 @@ const VERBS = [
         infinitive: "לספר",
         transliteration: "lesaper",
         meaning: "to tell/count",
+        category: "Communication",
         binyan: "Pi'el",
         root: "ס-פ-ר",
         past: {
@@ -9848,6 +10095,7 @@ const VERBS = [
         infinitive: "לצחוק",
         transliteration: "litschok",
         meaning: "to laugh",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "צ-ח-ק",
         past: {
@@ -9884,6 +10132,7 @@ const VERBS = [
         infinitive: "לבכות",
         transliteration: "livkot",
         meaning: "to cry",
+        category: "Emotions",
         binyan: "Pa'al",
         root: "ב-כ-י",
         past: {
@@ -9920,6 +10169,7 @@ const VERBS = [
         infinitive: "לחייך",
         transliteration: "lechayek",
         meaning: "to smile",
+        category: "Emotions",
         binyan: "Pi'el",
         root: "ח-י-כ",
         past: {
@@ -9956,6 +10206,7 @@ const VERBS = [
         infinitive: "לצעוק",
         transliteration: "litz'ok",
         meaning: "to shout/scream",
+        category: "Communication",
         binyan: "Pa'al",
         root: "צ-ע-ק",
         past: {
@@ -9992,6 +10243,7 @@ const VERBS = [
         infinitive: "ללחוש",
         transliteration: "lilchosh",
         meaning: "to whisper",
+        category: "Communication",
         binyan: "Pa'al",
         root: "ל-ח-ש",
         past: {
@@ -10028,6 +10280,7 @@ const VERBS = [
         infinitive: "להקשיב",
         transliteration: "lehakshiv",
         meaning: "to listen",
+        category: "Communication",
         binyan: "Hif'il",
         root: "ק-ש-ב",
         past: {
@@ -10064,6 +10317,7 @@ const VERBS = [
         infinitive: "לגעת",
         transliteration: "laga'at",
         meaning: "to touch",
+        category: "Senses",
         binyan: "Pa'al",
         root: "נ-ג-ע",
         past: {
@@ -10100,6 +10354,7 @@ const VERBS = [
         infinitive: "להריח",
         transliteration: "leheri'ach",
         meaning: "to smell",
+        category: "Senses",
         binyan: "Hif'il",
         root: "ר-י-ח",
         past: {
@@ -10136,6 +10391,7 @@ const VERBS = [
         infinitive: "לטעום",
         transliteration: "lit'om",
         meaning: "to taste",
+        category: "Senses",
         binyan: "Pa'al",
         root: "ט-ע-מ",
         past: {
@@ -10172,6 +10428,7 @@ const VERBS = [
         infinitive: "להרגיש",
         transliteration: "lehargish",
         meaning: "to feel",
+        category: "Senses",
         binyan: "Hif'il",
         root: "ר-ג-ש",
         past: {
@@ -10208,6 +10465,7 @@ const VERBS = [
         infinitive: "לקנא",
         transliteration: "lekane",
         meaning: "to be jealous",
+        category: "Basic",
         binyan: "Pi'el",
         root: "ק-נ-א",
         past: {
@@ -10244,6 +10502,7 @@ const VERBS = [
         infinitive: "לקוות",
         transliteration: "lekavot",
         meaning: "to hope",
+        category: "Mental",
         binyan: "Pi'el",
         root: "ק-ו-ה",
         past: {
@@ -10280,6 +10539,7 @@ const VERBS = [
         infinitive: "להתאהב",
         transliteration: "lehit'ahev",
         meaning: "to fall in love",
+        category: "Emotions",
         binyan: "Hitpa'el",
         root: "א-ה-ב",
         past: {
@@ -10316,6 +10576,7 @@ const VERBS = [
         infinitive: "להתגעגע",
         transliteration: "lehitga'age'a",
         meaning: "to miss (someone)",
+        category: "Emotions",
         binyan: "Hitpa'el",
         root: "ג-ע-ג-ע",
         past: {
@@ -10352,6 +10613,7 @@ const VERBS = [
         infinitive: "להתחתן",
         transliteration: "lehitchaten",
         meaning: "to get married",
+        category: "Social",
         binyan: "Hitpa'el",
         root: "ח-ת-נ",
         past: {
@@ -10388,6 +10650,7 @@ const VERBS = [
         infinitive: "להתגרש",
         transliteration: "lehitgaresh",
         meaning: "to get divorced",
+        category: "Social",
         binyan: "Hitpa'el",
         root: "ג-ר-ש",
         past: {
@@ -10424,6 +10687,7 @@ const VERBS = [
         infinitive: "להיוולד",
         transliteration: "lehivaled",
         meaning: "to be born",
+        category: "Basic",
         binyan: "Nif'al",
         root: "י-ל-ד",
         past: {
@@ -10460,6 +10724,7 @@ const VERBS = [
         infinitive: "למות",
         transliteration: "lamut",
         meaning: "to die",
+        category: "Life Events",
         binyan: "Pa'al",
         root: "מ-ו-ת",
         past: {
@@ -10496,6 +10761,7 @@ const VERBS = [
         infinitive: "לטוס",
         transliteration: "latus",
         meaning: "to fly",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ט-ו-ס",
         past: {
@@ -10532,6 +10798,7 @@ const VERBS = [
         infinitive: "לנחות",
         transliteration: "linchot",
         meaning: "to land",
+        category: "Movement",
         binyan: "Pa'al",
         root: "נ-ח-ת",
         past: {
@@ -10568,6 +10835,7 @@ const VERBS = [
         infinitive: "לארוז",
         transliteration: "le'eroz",
         meaning: "to pack",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "א-ר-ז",
         past: {
@@ -10604,6 +10872,7 @@ const VERBS = [
         infinitive: "להזיז",
         transliteration: "lehaziz",
         meaning: "to move (something)",
+        category: "Movement",
         binyan: "Hif'il",
         root: "ז-ו-ז",
         past: {
@@ -10640,6 +10909,7 @@ const VERBS = [
         infinitive: "לזוז",
         transliteration: "lazuz",
         meaning: "to move (oneself)",
+        category: "Movement",
         binyan: "Pa'al",
         root: "ז-ו-ז",
         past: {
@@ -10676,6 +10946,7 @@ const VERBS = [
         infinitive: "לעזור",
         transliteration: "la'azor",
         meaning: "to help",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ע-ז-ר",
         past: {
@@ -10712,6 +10983,7 @@ const VERBS = [
         infinitive: "לבקש",
         transliteration: "levakesh",
         meaning: "to ask for/request",
+        category: "Communication",
         binyan: "Pi'el",
         root: "ב-ק-ש",
         past: {
@@ -10748,6 +11020,7 @@ const VERBS = [
         infinitive: "לתת",
         transliteration: "latet",
         meaning: "to give",
+        category: "Actions",
         binyan: "Pa'al",
         root: "נ-ת-נ",
         past: {
@@ -10784,6 +11057,7 @@ const VERBS = [
         infinitive: "לקחת",
         transliteration: "lakachat",
         meaning: "to take",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ל-ק-ח",
         past: {
@@ -10820,6 +11094,7 @@ const VERBS = [
         infinitive: "להחזיר",
         transliteration: "lehachzir",
         meaning: "to return (something)",
+        category: "Movement",
         binyan: "Hif'il",
         root: "ח-ז-ר",
         past: {
@@ -10856,6 +11131,7 @@ const VERBS = [
         infinitive: "להשאיר",
         transliteration: "lehash'ir",
         meaning: "to leave (behind)",
+        category: "Movement",
         binyan: "Hif'il",
         root: "ש-א-ר",
         past: {
@@ -10892,6 +11168,7 @@ const VERBS = [
         infinitive: "לשלם",
         transliteration: "leshalem",
         meaning: "to pay",
+        category: "Actions",
         binyan: "Pi'el",
         root: "ש-ל-מ",
         past: {
@@ -10928,6 +11205,7 @@ const VERBS = [
         infinitive: "לקנות",
         transliteration: "liknot",
         meaning: "to buy",
+        category: "Actions",
         binyan: "Pa'al",
         root: "ק-נ-ה",
         past: {
@@ -10964,6 +11242,7 @@ const VERBS = [
         infinitive: "למכור",
         transliteration: "limkor",
         meaning: "to sell",
+        category: "Actions",
         binyan: "Pa'al",
         root: "מ-כ-ר",
         past: {
@@ -11000,6 +11279,7 @@ const VERBS = [
         infinitive: "להשתמש",
         transliteration: "lehishtamesh",
         meaning: "to use",
+        category: "Actions",
         binyan: "Hitpa'el",
         root: "ש-מ-ש",
         past: {
@@ -11036,6 +11316,7 @@ const VERBS = [
         infinitive: "להתכונן",
         transliteration: "lehitkonen",
         meaning: "to prepare oneself",
+        category: "Work/Study",
         binyan: "Hitpa'el",
         root: "כ-ו-נ",
         past: {
@@ -11072,6 +11353,7 @@ const VERBS = [
         infinitive: "להתלבש",
         transliteration: "lehitlabesh",
         meaning: "to get dressed",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ל-ב-ש",
         past: {
@@ -11108,6 +11390,7 @@ const VERBS = [
         infinitive: "להתקלח",
         transliteration: "lehitkalei'ach",
         meaning: "to shower",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ק-ל-ח",
         past: {
@@ -11144,6 +11427,7 @@ const VERBS = [
         infinitive: "להתאמן",
         transliteration: "lehit'amen",
         meaning: "to practice/train",
+        category: "Work/Study",
         binyan: "Hitpa'el",
         root: "א-מ-נ",
         past: {
@@ -11180,6 +11464,7 @@ const VERBS = [
         infinitive: "לחלום",
         transliteration: "lachlom",
         meaning: "to dream",
+        category: "Mental",
         binyan: "Pa'al",
         root: "ח-ל-מ",
         past: {
@@ -11216,6 +11501,7 @@ const VERBS = [
         infinitive: "להתעורר",
         transliteration: "lehit'orer",
         meaning: "to wake up",
+        category: "Daily Life",
         binyan: "Hitpa'el",
         root: "ע-ו-ר",
         past: {
@@ -11252,6 +11538,7 @@ const VERBS = [
         infinitive: "לישון",
         transliteration: "lishon",
         meaning: "to sleep",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "י-ש-נ",
         past: {
@@ -11288,6 +11575,7 @@ const VERBS = [
         infinitive: "לנוח",
         transliteration: "lanu'ach",
         meaning: "to rest",
+        category: "Daily Life",
         binyan: "Pa'al",
         root: "נ-ו-ח",
         past: {
@@ -11400,6 +11688,7 @@ function renderVerbList() {
                 <div class="verb-card-info">
                     <span class="info-tag binyan">${verb.binyan}</span>
                     <span class="info-tag root">${verb.root}</span>
+                    <span class="info-tag category">${verb.category}</span>
                 </div>
                 <div class="mastery-bar">
                     <div class="mastery-fill" style="width: ${masteryPercent}%"></div>
@@ -11934,6 +12223,7 @@ function initializeSearchAndFilter() {
 function filterVerbs() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     const binyanFilter = document.getElementById('binyanFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
 
     filteredVerbs = VERBS.filter(verb => {
         const matchesSearch =
@@ -11943,8 +12233,9 @@ function filterVerbs() {
             verb.root.includes(searchTerm);
 
         const matchesBinyan = !binyanFilter || verb.binyan === binyanFilter;
+        const matchesCategory = !categoryFilter || verb.category === categoryFilter;
 
-        return matchesSearch && matchesBinyan;
+        return matchesSearch && matchesBinyan && matchesCategory;
     });
 
     renderVerbList();
@@ -11953,6 +12244,7 @@ function filterVerbs() {
 function clearSearch() {
     document.getElementById('searchInput').value = '';
     document.getElementById('binyanFilter').value = '';
+    document.getElementById('categoryFilter').value = '';
     filterVerbs();
 }
 
