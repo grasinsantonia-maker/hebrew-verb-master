@@ -11777,29 +11777,42 @@ function playSound(type) {
 }
 
 // ==================== SPEECH SYNTHESIS (Hebrew Pronunciation) ====================
-let speechSynthesis = window.speechSynthesis;
+let speechSynth = window.speechSynthesis;
 let hebrewVoice = null;
+let voicesLoaded = false;
 
 // Find the best Hebrew voice
 function initializeSpeech() {
-    const voices = speechSynthesis.getVoices();
+    if (!speechSynth) return;
+
+    const voices = speechSynth.getVoices();
+    if (voices.length === 0) return;
+
+    voicesLoaded = true;
+    console.log('Available voices:', voices.map(v => v.lang + ' - ' + v.name));
 
     // Try to find a Hebrew voice
-    hebrewVoice = voices.find(voice => voice.lang.startsWith('he')) ||
-                  voices.find(voice => voice.lang === 'he-IL') ||
-                  voices.find(voice => voice.name.toLowerCase().includes('hebrew'));
+    hebrewVoice = voices.find(voice => voice.lang === 'he-IL') ||
+                  voices.find(voice => voice.lang.startsWith('he')) ||
+                  voices.find(voice => voice.name.toLowerCase().includes('hebrew')) ||
+                  voices.find(voice => voice.name.toLowerCase().includes('carmit'));
 
-    // Fallback: if no Hebrew voice, try to find any voice that might work
+    // Fallback: if no Hebrew voice, use default
     if (!hebrewVoice) {
-        hebrewVoice = voices.find(voice => voice.lang.includes('IL')) || voices[0];
+        console.log('No Hebrew voice found, using default');
+        hebrewVoice = voices[0];
+    } else {
+        console.log('Using Hebrew voice:', hebrewVoice.name);
     }
 }
 
 // Initialize voices when available
-if (speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.onvoiceschanged = initializeSpeech;
+if (speechSynth) {
+    // Chrome loads voices asynchronously
+    speechSynth.onvoiceschanged = initializeSpeech;
+    // Try immediately for Firefox/Safari
+    initializeSpeech();
 }
-initializeSpeech();
 
 function speakHebrew(text, event) {
     // Stop propagation to prevent card flip or modal close
@@ -11809,17 +11822,24 @@ function speakHebrew(text, event) {
     }
 
     if (!settings.audioPronunciation) return;
-    if (!speechSynthesis) {
-        console.warn('Speech synthesis not supported');
+    if (!speechSynth) {
+        alert('Speech synthesis not supported in this browser');
         return;
     }
 
+    if (!text || text === '—' || text === '-') return;
+
+    // Retry voice initialization if needed
+    if (!voicesLoaded) {
+        initializeSpeech();
+    }
+
     // Cancel any ongoing speech
-    speechSynthesis.cancel();
+    speechSynth.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'he-IL';
-    utterance.rate = parseFloat(settings.speechSpeed);
+    utterance.rate = parseFloat(settings.speechSpeed) || 0.8;
     utterance.pitch = 1;
     utterance.volume = 1;
 
@@ -11832,21 +11852,42 @@ function speakHebrew(text, event) {
     if (btn) {
         btn.classList.add('speaking');
         utterance.onend = () => btn.classList.remove('speaking');
-        utterance.onerror = () => btn.classList.remove('speaking');
+        utterance.onerror = (e) => {
+            console.error('Speech error:', e);
+            btn.classList.remove('speaking');
+        };
     }
 
-    speechSynthesis.speak(utterance);
+    // Small delay to ensure cancel completes
+    setTimeout(() => {
+        speechSynth.speak(utterance);
+    }, 50);
 }
 
-// Speak multiple words (for conjugation tables)
-function speakConjugation(hebrewText, event) {
+// Speak text from element's data attribute or text content
+function speakFromElement(element, event) {
     if (event) {
         event.stopPropagation();
         event.preventDefault();
     }
 
-    if (!settings.audioPronunciation || hebrewText === '—') return;
-    speakHebrew(hebrewText, null);
+    const text = element.dataset.speak || element.textContent.trim();
+    if (text && text !== '—') {
+        speakHebrew(text, event);
+    }
+}
+
+// Speak verb by index
+function speakVerb(index, event) {
+    if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    const verb = VERBS[index];
+    if (verb) {
+        speakHebrew(verb.infinitive, event);
+    }
 }
 
 // Speak the current flashcard verb
@@ -11870,16 +11911,17 @@ function renderVerbList() {
         const isStudied = studiedVerbs.has(verb.infinitive);
         const mastery = verbMastery[verb.infinitive] || 0;
         const masteryPercent = Math.min(mastery * 25, 100);
+        const verbIndex = VERBS.indexOf(verb);
 
         return `
-            <div class="verb-card ${isStudied ? 'studied' : ''}" onclick="openVerbModal(${VERBS.indexOf(verb)})">
+            <div class="verb-card ${isStudied ? 'studied' : ''}" onclick="openVerbModal(${verbIndex})">
                 <div class="verb-card-header">
                     <div class="verb-card-content">
                         <div class="verb-card-hebrew">${verb.infinitive}</div>
                         <div class="verb-card-translit">${verb.transliteration}</div>
                         <div class="verb-card-meaning">${verb.meaning}</div>
                     </div>
-                    <button class="speak-btn" onclick="speakHebrew('${verb.infinitive}', event)" title="Listen to pronunciation">
+                    <button class="speak-btn" onclick="speakVerb(${verbIndex}, event)" title="Listen to pronunciation">
                         🔊
                     </button>
                 </div>
@@ -11898,7 +11940,11 @@ function renderVerbList() {
     updateAllStats();
 }
 
+// Store current modal verb index for audio
+let currentModalVerbIndex = 0;
+
 function openVerbModal(index) {
+    currentModalVerbIndex = index;
     const verb = VERBS[index];
     const modal = document.getElementById('verbModal');
     const detail = document.getElementById('verbDetail');
@@ -11909,7 +11955,7 @@ function openVerbModal(index) {
             <div class="verb-detail-header">
                 <div class="verb-detail-header-row">
                     <div class="verb-detail-hebrew">${verb.infinitive}</div>
-                    <button class="speak-btn speak-btn-lg" onclick="speakHebrew('${verb.infinitive}', event)" title="Listen to pronunciation">
+                    <button class="speak-btn speak-btn-lg" onclick="speakVerb(${index}, event)" title="Listen to pronunciation">
                         🔊
                     </button>
                 </div>
@@ -11919,24 +11965,24 @@ function openVerbModal(index) {
                     <span class="meta-badge">${verb.binyan}</span>
                     <span class="meta-badge root-badge">${verb.root}</span>
                 </div>
-                <button class="mark-studied-btn ${isStudied ? 'studied' : ''}" onclick="toggleStudied('${verb.infinitive}')">
+                <button class="mark-studied-btn ${isStudied ? 'studied' : ''}" onclick="toggleStudied('${verb.infinitive.replace(/'/g, "\\'")}')">
                     ${isStudied ? '✓ Studied - Click to Unmark' : '📚 Mark as Studied'}
                 </button>
             </div>
 
             <div class="tense-section">
                 <h3 class="tense-title">📜 Past Tense (עבר)</h3>
-                ${createPastTable(verb.past)}
+                ${createPastTable(verb.past, index)}
             </div>
 
             <div class="tense-section">
                 <h3 class="tense-title">🔄 Present Tense (הווה)</h3>
-                ${createPresentTable(verb.present)}
+                ${createPresentTable(verb.present, index)}
             </div>
 
             <div class="tense-section">
                 <h3 class="tense-title">🔮 Future Tense (עתיד)</h3>
-                ${createFutureTable(verb.future)}
+                ${createFutureTable(verb.future, index)}
             </div>
         </div>
     `;
@@ -11973,7 +12019,7 @@ function closeModal() {
 }
 
 // ==================== CONJUGATION TABLES ====================
-function createPastTable(conj) {
+function createPastTable(conj, verbIndex) {
     return `
         <div class="table-container">
             <table class="conjugation-table">
@@ -11990,35 +12036,35 @@ function createPastTable(conj) {
                     <tr>
                         <td class="person-label">1st (I/We)</td>
                         <td class="translit-text">${conj.s1}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s1_he}', event)" title="Click to hear">${conj.s1_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s1_he}</td>
                         <td class="translit-text">${conj.p1}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p1_he}', event)" title="Click to hear">${conj.p1_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p1_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">2nd Masc</td>
                         <td class="translit-text">${conj.s2m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s2m_he}', event)" title="Click to hear">${conj.s2m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s2m_he}</td>
                         <td class="translit-text">${conj.p2m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p2m_he}', event)" title="Click to hear">${conj.p2m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p2m_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">2nd Fem</td>
                         <td class="translit-text">${conj.s2f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s2f_he}', event)" title="Click to hear">${conj.s2f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s2f_he}</td>
                         <td class="translit-text">${conj.p2f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p2f_he}', event)" title="Click to hear">${conj.p2f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p2f_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">3rd Masc</td>
                         <td class="translit-text">${conj.s3m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s3m_he}', event)" title="Click to hear">${conj.s3m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s3m_he}</td>
                         <td class="translit-text">${conj.p3}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p3_he}', event)" title="Click to hear">${conj.p3_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p3_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">3rd Fem</td>
                         <td class="translit-text">${conj.s3f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s3f_he}', event)" title="Click to hear">${conj.s3f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s3f_he}</td>
                         <td>—</td>
                         <td>—</td>
                     </tr>
@@ -12028,7 +12074,7 @@ function createPastTable(conj) {
     `;
 }
 
-function createPresentTable(conj) {
+function createPresentTable(conj, verbIndex) {
     return `
         <div class="table-container">
             <table class="conjugation-table">
@@ -12044,25 +12090,25 @@ function createPresentTable(conj) {
                     <tr>
                         <td class="person-label">Masc Sing</td>
                         <td class="translit-text">${conj.ms}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.ms_he}', event)" title="Click to hear">${conj.ms_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.ms_he}</td>
                         <td class="hebrew-text">אני/אתה/הוא</td>
                     </tr>
                     <tr>
                         <td class="person-label">Fem Sing</td>
                         <td class="translit-text">${conj.fs}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.fs_he}', event)" title="Click to hear">${conj.fs_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.fs_he}</td>
                         <td class="hebrew-text">אני/את/היא</td>
                     </tr>
                     <tr>
                         <td class="person-label">Masc Plur</td>
                         <td class="translit-text">${conj.mp}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.mp_he}', event)" title="Click to hear">${conj.mp_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.mp_he}</td>
                         <td class="hebrew-text">אנחנו/אתם/הם</td>
                     </tr>
                     <tr>
                         <td class="person-label">Fem Plur</td>
                         <td class="translit-text">${conj.fp}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.fp_he}', event)" title="Click to hear">${conj.fp_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.fp_he}</td>
                         <td class="hebrew-text">אנחנו/אתן/הן</td>
                     </tr>
                 </tbody>
@@ -12071,7 +12117,7 @@ function createPresentTable(conj) {
     `;
 }
 
-function createFutureTable(conj) {
+function createFutureTable(conj, verbIndex) {
     return `
         <div class="table-container">
             <table class="conjugation-table">
@@ -12088,37 +12134,37 @@ function createFutureTable(conj) {
                     <tr>
                         <td class="person-label">1st (I/We)</td>
                         <td class="translit-text">${conj.s1}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s1_he}', event)" title="Click to hear">${conj.s1_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s1_he}</td>
                         <td class="translit-text">${conj.p1}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p1_he}', event)" title="Click to hear">${conj.p1_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p1_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">2nd Masc</td>
                         <td class="translit-text">${conj.s2m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s2m_he}', event)" title="Click to hear">${conj.s2m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s2m_he}</td>
                         <td class="translit-text">${conj.p2m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p2m_he}', event)" title="Click to hear">${conj.p2m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p2m_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">2nd Fem</td>
                         <td class="translit-text">${conj.s2f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s2f_he}', event)" title="Click to hear">${conj.s2f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s2f_he}</td>
                         <td class="translit-text">${conj.p2f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p2f_he}', event)" title="Click to hear">${conj.p2f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p2f_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">3rd Masc</td>
                         <td class="translit-text">${conj.s3m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s3m_he}', event)" title="Click to hear">${conj.s3m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s3m_he}</td>
                         <td class="translit-text">${conj.p3m}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p3m_he}', event)" title="Click to hear">${conj.p3m_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p3m_he}</td>
                     </tr>
                     <tr>
                         <td class="person-label">3rd Fem</td>
                         <td class="translit-text">${conj.s3f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.s3f_he}', event)" title="Click to hear">${conj.s3f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.s3f_he}</td>
                         <td class="translit-text">${conj.p3f}</td>
-                        <td class="hebrew-text clickable" onclick="speakConjugation('${conj.p3f_he}', event)" title="Click to hear">${conj.p3f_he}</td>
+                        <td class="hebrew-text clickable" onclick="speakFromElement(this, event)" title="Click to hear">${conj.p3f_he}</td>
                     </tr>
                 </tbody>
             </table>
